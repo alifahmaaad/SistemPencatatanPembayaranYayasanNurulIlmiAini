@@ -16,6 +16,7 @@
     "@mui/material": "^5.11.9",
     "@mui/styled-engine-sc": "^5.11.9",
     "@mui/x-data-grid": "^5.17.23",
+    "@mui/x-data-grid-generator": "^5.17.24",
     "@tauri-apps/api": "^1.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
