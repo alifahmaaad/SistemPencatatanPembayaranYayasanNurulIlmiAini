@@ -60,10 +60,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 650,
         "resizable": true,
         "title": "sistem-pembayaran-sekolah",
-        "width": 800
+        "width": 1000
       }
     ]
   }
