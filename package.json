@@ -17,10 +17,12 @@
     "@mui/styled-engine-sc": "^5.11.9",
     "@mui/x-data-grid": "^5.17.23",
     "@mui/x-data-grid-generator": "^5.17.24",
+    "@reduxjs/toolkit": "^1.9.3",
     "@tauri-apps/api": "^1.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-pro-sidebar": "^1.0.0",
+    "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.1",
     "styled-components": "^5.3.6",
     "tauri-plugin-sql-api": "github:tauri-apps/tauri-plugin-sql"
