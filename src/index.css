@@ -9,11 +9,13 @@ body,
   font-family: "Josefin Sans", sans-serif;
   /* font-family: "Source Sans Pro", sans-serif; */
 }
+html {
+  min-height: max-content;
+}
 body {
   margin: 0;
-  height: 100%;
   width: 100%;
-  /* background-color: white; */
+  background-color: #f2fbf7;
 }
 #app {
   display: flex;
@@ -32,6 +34,11 @@ body {
 }
 #header {
   font-family: auto;
-  font-size: 24px;
+  font-size: 30px;
   font-weight: 550;
+  text-align: center;
+}
+.css-1x51dt5-MuiInputBase-input-MuiInput-input {
+  box-shadow: none;
+  border-radius: 0 !important;
 }

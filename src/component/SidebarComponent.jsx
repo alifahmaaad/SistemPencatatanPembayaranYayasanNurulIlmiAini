@@ -1,6 +1,5 @@
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import { Box, Divider, IconButton, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import { Box, IconButton, Typography } from "@mui/material";
+import React from "react";
 import {
   Menu,
   MenuItem,
@@ -31,30 +30,31 @@ const SidebarComponent = () => {
   return (
     <Sidebar
       backgroundColor="white"
-      style={{ height: "100vh" }}
+      style={{
+        minHeight: "100vh",
+        maxHeight: "max-content",
+      }}
       collapsedWidth="70px"
     >
       <Box
         sx={{
           display: "flex",
           justifyContent: collapsed ? "center" : "flex-end",
-          padding: "10px",
+          padding: collapsed ? "10px 0 10px 8px" : "10px",
         }}
       >
         <IconButton
           onClick={() => collapseSidebar()}
-          color="primary"
-          sx={{ boxShadow: 0 }}
+          sx={{ boxShadow: 0, color: "#53c79e" }}
         >
           {collapsed ? <MenuIcon /> : <MenuOpenIcon />}
         </IconButton>
       </Box>
       <Menu
         menuItemStyles={{
-          button: ({ disabled }) => {
-            // only apply styles on first level elements of the tree
+          button: () => {
             return {
-              color: "#1976d2",
+              color: "#53c79e",
               backgroundColor: "white",
             };
           },
@@ -65,7 +65,7 @@ const SidebarComponent = () => {
             variant="h4"
             id="nameside"
             textAlign={"center"}
-            color={"#1976d2"}
+            color={"#53c79e"}
           >
             {collapsed ? (
               ""

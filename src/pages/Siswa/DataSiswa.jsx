@@ -1,7 +1,16 @@
-import React, { useState, useEffect } from "react";
-import TableCustom from "../component/TableCustom";
+import React, { useEffect } from "react";
+import TableCustom from "../../component/TableCustom";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const Home = () => {
+const DataSiswa = () => {
+  const isLogin = useSelector((state) => state.status);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLogin) {
+      navigate("/Login");
+    }
+  }, []);
   const columnss = [
     { field: "id", headerName: "ID", width: 100 },
     {
@@ -39,4 +48,4 @@ const Home = () => {
   return <TableCustom title="Data Siswa" rows={rowss} columns={columnss} />;
 };
 
-export default Home;
+export default DataSiswa;
