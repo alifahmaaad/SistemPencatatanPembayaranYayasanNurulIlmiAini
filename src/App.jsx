@@ -1,57 +1,33 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/tauri";
-import Database from "tauri-plugin-sql-api";
-import "./App.css";
+import { Route, Routes, BrowserRouter, redirect } from "react-router-dom";
+import DataSiswa from "./pages/Siswa/DataSiswa";
+import "./index.css";
+import SidebarComponent from "./component/SidebarComponent";
+import Login from "./pages/Login";
+import { Box } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    const db = await Database.load("sqlite:haiya.db");
-    await db.execute(`CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      email TEXT NOT NULL
-    )`);
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  const isLogin = useSelector((state) => state.status);
 
   return (
-    <div className="container">
-      <h1>Welcome to Tauri!</h1>
+    <BrowserRouter>
+      <div id="app">
+        {isLogin ? <SidebarComponent /> : null}
 
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <Box
+          sx={{
+            width: "100%",
+            padding: isLogin ? "3rem 1rem" : "0",
+          }}
+        >
+          <Routes>
+            <Route path="/" element={<DataSiswa />} />
+            <Route path="/Login" element={<Login />} />
+            {/* <Route path="/" element={<Login />} /> */}
+          </Routes>
+        </Box>
       </div>
-
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <div className="row">
-        <div>
-          <input
-            id="greet-input"
-            onChange={(e) => setName(e.currentTarget.value)}
-            placeholder="Enter a name..."
-          />
-          <button type="button" onClick={() => greet()}>
-            Greet
-          </button>
-        </div>
-      </div>
-
-      <p>{greetMsg}</p>
-    </div>
+    </BrowserRouter>
   );
 }
 

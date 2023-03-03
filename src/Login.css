@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+body {
+  min-height: 100vh;
+  max-height: max-content;
+}
+
+#kiri {
+  /* background-color: rgb(83, 199, 158);
+  background-color: linear-gradient(
+    90deg,
+    rgba(83, 199, 158, 1) 28%,
+    rgba(255, 255, 255, 1) 100%
+  ); */
+  background: #53c79e;
+  background: linear-gradient(145deg, #53c79e 10%, #ffffff 100%);
+}
+#kanan {
+  background-color: white;
+}
+#input {
+  margin: 0.3rem;
+}
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+  margin: 0.5rem !important;
+}
+#logintitle {
+  font-family: "Lobster", cursive;
+}

@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital@0;1&display=swap");
+html,
+body,
+#root,
+.app,
+.content {
+  font-family: "Josefin Sans", sans-serif;
+  /* font-family: "Source Sans Pro", sans-serif; */
+}
+html {
+  min-height: max-content;
+}
+body {
+  margin: 0;
+  width: 100%;
+  background-color: #f2fbf7;
+}
+#app {
+  display: flex;
+  width: 100%;
+}
+#nameside {
+  font-family: "Lobster", cursive;
+}
+.css-1e2bxag-MuiDataGrid-root {
+  border: none !important;
+  line-height: 2rem;
+}
+.css-aj5yx6-MuiButtonBase-root-MuiButton-root {
+  text-transform: none !important;
+  font-size: initial;
+}
+#header {
+  font-family: auto;
+  font-size: 30px;
+  font-weight: 550;
+  text-align: center;
+}
+.css-1x51dt5-MuiInputBase-input-MuiInput-input {
+  box-shadow: none;
+  border-radius: 0 !important;
+}
