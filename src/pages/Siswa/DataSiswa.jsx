@@ -1,51 +1,78 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import TableCustom from "../../component/TableCustom";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { getSiswa } from "../../Database/database";
+import Header from "../../component/Header";
+import PilihKelas from "../../component/PilihKelas";
+import { Alert, Box } from "@mui/material";
 const DataSiswa = () => {
-  const isLogin = useSelector((state) => state.status);
+  const isLogin = useSelector((state) => state.isLogin);
+  const [rows, setRow] = useState([]);
+  const [isIdGet, setisIdGet] = useState();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
     if (!isLogin) {
       navigate("/Login");
     }
-  }, []);
+  }, [isLogin]);
+  useEffect(() => {
+    const getSiswafromdb = async () => {
+      setRow(await getSiswa(isIdGet));
+      setLoading(false);
+    };
+    getSiswafromdb();
+  }, [isIdGet]);
+  const getIDkelas = (val) => {
+    setisIdGet(val);
+    // console.log(val);
+  };
+  const [sortModel, setSortModel] = useState([
+    {
+      field: "nama",
+      sort: "asc",
+    },
+  ]);
   const columnss = [
-    { field: "id", headerName: "ID", width: 100 },
+    { field: "id", headerName: "ID", width: 100, hide: true },
     {
-      field: "firstName",
-      headerName: "First name",
+      field: "nama",
+      headerName: "Nama",
       width: 100,
-      editable: true,
     },
     {
-      field: "lastName",
-      headerName: "Last name",
+      field: "kelas",
+      headerName: "kelas",
       width: 100,
-      editable: true,
     },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      width: 100,
-      editable: true,
-    },
-  ];
-  const rowss = [
-    { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-    { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-    { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
   ];
 
-  return <TableCustom title="Data Siswa" rows={rowss} columns={columnss} />;
+  return (
+    <div>
+      <Header
+        title="Data Siswa"
+        button_tambah={isIdGet ? true : false}
+        idkelas={isIdGet}
+      />
+      {!isIdGet && (
+        <Box paddingBottom={"0.5rem"}>
+          <Alert severity="info">Silahkan Pilih Kelas Terlebih Dahulu</Alert>
+        </Box>
+      )}
+      <PilihKelas getIDkelas={getIDkelas} />
+      {isIdGet && (
+        <div>
+          <TableCustom
+            rows={rows}
+            columns={columnss}
+            sortmodel={sortModel}
+            loading={loading}
+          />
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default DataSiswa;

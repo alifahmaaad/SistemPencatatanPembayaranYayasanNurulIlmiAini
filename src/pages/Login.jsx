@@ -5,31 +5,56 @@ import {
   InputAdornment,
   Typography,
   Button,
+  Alert,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../Login.css";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
-import { login } from "../Redux/Reducer/Reducer";
+import { login, role } from "../Redux/Reducer/Reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import buttonSX from "../buttonsx";
+import { buttonSX } from "../buttonsx";
+import { checkUsername, loginaccount } from "../Database/database";
 
 const Login = () => {
   const navigate = useNavigate();
-  const count = useSelector((state) => state.status);
   const dispatch = useDispatch();
-  const onSubmitjj = (event) => {
-    console.log(event.target[0].value);
+  const isLogin = useSelector((state) => state.isLogin);
+  const isSetup = useSelector((state) => state.isSetup);
+  const [isError, setIsError] = useState(false);
+
+  const handleSubmitLogin = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("username"),
+    const formdata = {
+      username: data.get("username"),
       password: data.get("password"),
-    });
-    dispatch(login());
-    navigate("/");
+    };
+    if ((await checkUsername(formdata.username)) > 0) {
+      const logincheck = await loginaccount(
+        formdata.username,
+        formdata.password
+      );
+      if (logincheck[0]) {
+        dispatch(login(true));
+        setIsError(false);
+        role(logincheck[1]);
+      } else {
+        setIsError(true);
+      }
+    } else {
+      setIsError(true);
+    }
   };
+  useEffect(() => {
+    if (isLogin) {
+      navigate("/kelas");
+    }
+    if (!isSetup) {
+      navigate("/");
+    }
+  }, [isLogin, isSetup]);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container>
@@ -78,14 +103,18 @@ const Login = () => {
               >
                 Login
               </Typography>
-              <form onSubmit={onSubmitjj}>
+              {isError && (
+                <Alert severity="error" sx={{ marginBottom: "1rem" }}>
+                  Username atau Password Salah
+                </Alert>
+              )}
+              <form onSubmit={handleSubmitLogin}>
                 <TextField
                   id="input username"
                   name="username"
                   required
                   label="Username"
-                  // error="true"
-                  // helperText="Name is required"
+                  error={isError}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -96,10 +125,12 @@ const Login = () => {
                   variant="standard"
                 />
                 <br />
+                <br />
                 <TextField
                   id="input password"
                   required
                   label="Password"
+                  error={isError}
                   name="password"
                   type="password"
                   InputProps={{
@@ -111,9 +142,6 @@ const Login = () => {
                   }}
                   variant="standard"
                 />
-                {/* <Button sx={buttonSX} onClick={() => dispatch(login("ayam"))}>
-                LOGIN
-              </Button> */}
                 <br />
                 <br />
                 <Button sx={buttonSX} fullWidth={true} type="submit">

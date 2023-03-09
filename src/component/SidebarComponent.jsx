@@ -24,9 +24,11 @@ import TodayIcon from "@mui/icons-material/Today";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import RepeatIcon from "@mui/icons-material/Repeat";
+import ClassIcon from "@mui/icons-material/Class";
+import { useSelector } from "react-redux";
 const SidebarComponent = () => {
   const { collapseSidebar, collapsed } = useProSidebar();
-
+  const Role = useSelector((state) => state.role);
   return (
     <Sidebar
       backgroundColor="white"
@@ -79,9 +81,16 @@ const SidebarComponent = () => {
           </Typography>
         </div>
         <MenuItem
+          active={window.location.pathname === "/kelas"}
+          icon={<ClassIcon />}
+          component={<Link to="/kelas" />}
+        >
+          Daftar Kelas
+        </MenuItem>
+        <MenuItem
           active={window.location.pathname === "/siswa"}
           icon={<ContactsIcon />}
-          component={<Link to="/" />}
+          component={<Link to="/siswa" />}
         >
           Data Siswa
         </MenuItem>
@@ -97,6 +106,7 @@ const SidebarComponent = () => {
           >
             SPP
           </MenuItem>
+
           <MenuItem
             active={window.location.pathname === "/Pembayaran/komite"}
             icon={<PriceCheckIcon />}
