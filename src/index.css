@@ -42,3 +42,13 @@ body {
   box-shadow: none;
   border-radius: 0 !important;
 }
+.logout:hover {
+  cursor: pointer;
+}
+#form {
+  width: auto;
+}
+input,
+button {
+  box-shadow: none !important;
+}
