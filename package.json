@@ -19,6 +19,7 @@
     "@mui/x-data-grid-generator": "^5.17.24",
     "@reduxjs/toolkit": "^1.9.3",
     "@tauri-apps/api": "^1.2.0",
+    "bcryptjs": "^2.4.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-pro-sidebar": "^1.0.0",
