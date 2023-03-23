@@ -132,10 +132,11 @@ const DaftarKelas = () => {
           name="tipe_kelas"
           select
           required
+          focused
           fullWidth={true}
           label="Pilih Kelas"
           defaultValue="0"
-          variant="filled"
+          variant="standard"
           size="small"
           onChange={(event) => {
             getTypeClass(event.target.value);
