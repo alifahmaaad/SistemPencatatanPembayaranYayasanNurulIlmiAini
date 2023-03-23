@@ -54,6 +54,7 @@ const CreateKelas = () => {
             id="input nama_kelas"
             name="nama_kelas"
             required
+            focused
             label="Nama Kelas"
             variant="standard"
             fullWidth={true}
@@ -65,6 +66,7 @@ const CreateKelas = () => {
             name="tingkat_kelas"
             select
             required
+            focused
             fullWidth={true}
             label="Tingkat Sekolah"
             defaultValue="SMP"
