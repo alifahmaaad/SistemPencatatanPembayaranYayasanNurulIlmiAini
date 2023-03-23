@@ -1,6 +1,6 @@
 # Sistem Pembayaran Sekolah atau Aplikasi Keuangan Sekolah Nurul Ilmi Aini
 
-Using Tauri + React JS + Material UI
+Using Tauri + Material UI + React JS 
 Using React Redux + React Router + bcryptjs + tauri-plugin-sql + sqlite database
 
 dev : npm run tauri dev
