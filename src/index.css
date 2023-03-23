@@ -51,4 +51,15 @@ body {
 input,
 button {
   box-shadow: none !important;
+  color: yellowgreen;
+}
+.css-l4u8b9-MuiInputBase-root-MuiInput-root:after {
+  border-bottom: none !important;
+}
+.css-1c2i806-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+  color: #53c79e !important;
+  font-weight: bold !important;
+}
+.css-jd1zyo-MuiSelect-select-MuiInputBase-input-MuiInput-input:focus {
+  background-color: unset !important;
 }

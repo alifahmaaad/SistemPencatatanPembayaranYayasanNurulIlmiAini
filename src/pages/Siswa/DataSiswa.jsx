@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TableCustom from "../../component/TableCustom";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getSiswa } from "../../Database/database";
 import Header from "../../component/Header";
 import PilihKelas from "../../component/PilihKelas";
@@ -9,8 +9,11 @@ import { Alert, Box } from "@mui/material";
 const DataSiswa = () => {
   const isLogin = useSelector((state) => state.isLogin);
   const [rows, setRow] = useState([]);
+  const { state } = useLocation();
   const [isIdGet, setisIdGet] = useState();
+  const [isNewdata, setIsNewdata] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [namakelas, setNamakelas] = useState("testest");
   const navigate = useNavigate();
   useEffect(() => {
     if (!isLogin) {
@@ -24,13 +27,32 @@ const DataSiswa = () => {
     };
     getSiswafromdb();
   }, [isIdGet]);
+  useEffect(() => {
+    if (state == null) {
+      return undefined;
+    }
+    if (state.data) {
+      setNamakelas("(" + state.data.tingkat + ")" + state.data.kelas);
+    }
+    if (state.value) {
+      setIsNewdata(true);
+      const timeId = setTimeout(() => {
+        setIsNewdata(false);
+        state.value = false;
+      }, 2000);
+
+      return () => {
+        clearTimeout(timeId);
+      };
+    }
+  }, []);
   const getIDkelas = (val) => {
     setisIdGet(val);
     // console.log(val);
   };
   const [sortModel, setSortModel] = useState([
     {
-      field: "nama",
+      field: "nisn_atau_no_absen",
       sort: "asc",
     },
   ]);
@@ -39,11 +61,16 @@ const DataSiswa = () => {
     {
       field: "nama",
       headerName: "Nama",
-      width: 100,
+      width: 200,
     },
     {
       field: "kelas",
       headerName: "kelas",
+      width: 100,
+    },
+    {
+      field: "nisn_atau_no_absen",
+      headerName: "NISN/NO ABSEN",
       width: 100,
     },
   ];
@@ -58,6 +85,13 @@ const DataSiswa = () => {
       {!isIdGet && (
         <Box paddingBottom={"0.5rem"}>
           <Alert severity="info">Silahkan Pilih Kelas Terlebih Dahulu</Alert>
+        </Box>
+      )}
+      {isNewdata && (
+        <Box padding={"0.5rem 0 0 0"}>
+          <Alert severity="success">
+            Data berhasil Ditambahkan {namakelas}
+          </Alert>
         </Box>
       )}
       <PilihKelas getIDkelas={getIDkelas} />

@@ -71,9 +71,8 @@ CREATE TABLE IF NOT EXISTS les
 
 CREATE TABLE IF NOT EXISTS qurban
 ( id INTEGER PRIMARY KEY AUTOINCREMENT,
-  jumlah_terhutang INTEGER NOT NULL,
-  jumlah_terbayar INTEGER NOT NULL,
-  bulan TEXT NOT NULL,
+  jumlah INTEGER NOT NULL,
+  tanggal TEXT NOT NULL,
   id_siswa INTEGER NOT NULL,
   FOREIGN KEY (id_siswa) REFERENCES siswa(id)
 );
@@ -270,7 +269,42 @@ export const getSiswa = async (id) => {
     console.error(e);
   }
 };
-export const getSPP = async (id) => {
+export const getSiswabyno_absen = async (id, nisn_no_absen) => {
+  try {
+    const siswa = await db.select(
+      `SELECT * FROM siswa WHERE id_kelas='` +
+        id +
+        `' AND nisn_atau_no_absen='` +
+        nisn_no_absen +
+        `';`
+    );
+    return siswa;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const create_siswa = async (id_kelas, nama, nisn_atau_no_absen) => {
+  try {
+    const siswa = await getSiswabyno_absen(id_kelas, nisn_atau_no_absen);
+    if (siswa.length > 0) {
+      return true;
+    } else {
+      await db.execute(
+        `INSERT INTO siswa (id_kelas,nama,nisn_atau_no_absen) 
+VALUES('` +
+          id_kelas +
+          `','` +
+          nama +
+          `','` +
+          nisn_atau_no_absen +
+          `');`
+      );
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const getSpp = async (id) => {
   try {
     const spp = await db.select(
       `SELECT * FROM spp INNER JOIN siswa ON spp.id_siswa = siswa.id INNER JOIN kelas ON siswa.id_kelas = kelas.id WHERE siswa.id_kelas='` +
@@ -278,6 +312,44 @@ export const getSPP = async (id) => {
         `' ;`
     );
     return spp;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const getSPPbybulanidsiswa = async (bulan, id) => {
+  try {
+    const spp = await db.select(
+      `SELECT * FROM spp WHERE id_siswa='` + id + `' AND bulan='` + bulan + `';`
+    );
+    return spp;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const create_siswa_spp = async (id_kelas, bulan, dataform) => {
+  const spp = dataform.spp.replace("Rp.", "");
+  const spp_without_dot = spp.split(".").join("");
+  const nisn_atau_absen = dataform.nisn_no_absen;
+  try {
+    const siswa = await getSiswabyno_absen(id_kelas, nisn_atau_absen);
+    const id_siswa = siswa[0].id;
+    const isSppAda = await getSPPbybulanidsiswa(bulan, id_siswa);
+    if (siswa.length > 0 && isSppAda.length == 0) {
+      await db.execute(
+        `INSERT INTO spp (bulan,jumlah_terbayar,jumlah_terhutang,id_siswa)
+    VALUES('` +
+          bulan +
+          `',` +
+          0 +
+          `,` +
+          spp_without_dot +
+          `,'` +
+          id_siswa +
+          `');`
+      );
+    } else {
+      return true;
+    }
   } catch (e) {
     console.error(e);
   }
@@ -294,6 +366,48 @@ export const getKomite = async (id) => {
     console.error(e);
   }
 };
+export const getKomitebybulanidsiswa = async (bulan, id) => {
+  try {
+    const komite = await db.select(
+      `SELECT * FROM komite WHERE id_siswa='` +
+        id +
+        `' AND bulan='` +
+        bulan +
+        `';`
+    );
+    return komite;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const create_siswa_komite = async (id_kelas, bulan, dataform) => {
+  const komite = dataform.komite.replace("Rp.", "");
+  const komite_without_dot = komite.split(".").join("");
+  const nisn_atau_absen = dataform.nisn_no_absen;
+  try {
+    const siswa = await getSiswabyno_absen(id_kelas, nisn_atau_absen);
+    const id_siswa = siswa[0].id;
+    const isKomiteAda = await getKomitebybulanidsiswa(bulan, id_siswa);
+    if (siswa.length > 0 && isKomiteAda.length == 0) {
+      await db.execute(
+        `INSERT INTO komite (bulan,jumlah_terbayar,jumlah_terhutang,id_siswa)
+    VALUES('` +
+          bulan +
+          `',` +
+          0 +
+          `,` +
+          komite_without_dot +
+          `,'` +
+          id_siswa +
+          `');`
+      );
+    } else {
+      return true;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
 export const getPendaftaran = async (id) => {
   try {
     const pendaftaran = await db.select(
@@ -302,6 +416,40 @@ export const getPendaftaran = async (id) => {
         `' ;`
     );
     return pendaftaran;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const getPendaftaranbyidsiswa = async (id) => {
+  try {
+    const pendaftaran = await db.select(
+      `SELECT * FROM pendaftaran WHERE id_siswa='` + id + `';`
+    );
+    return pendaftaran;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const create_siswa_Pendaftaran = async (id_kelas, dataform) => {
+  const pendaftaran = dataform.pendaftaran.replace("Rp.", "");
+  const pendaftaran_without_dot = pendaftaran.split(".").join("");
+  const nisn_atau_absen = dataform.nisn_no_absen;
+  try {
+    const siswa = await getSiswabyno_absen(id_kelas, nisn_atau_absen);
+    const id_siswa = siswa[0].id;
+    const isPendaftaranAda = await getPendaftaranbyidsiswa(id_siswa);
+    if (siswa.length > 0 && isPendaftaranAda.length == 0) {
+      await db.execute(
+        `INSERT INTO pendaftaran (jumlah_terbayar,jumlah_terhutang,id_siswa)
+    VALUES(0,` +
+          pendaftaran_without_dot +
+          `,'` +
+          id_siswa +
+          `');`
+      );
+    } else {
+      return true;
+    }
   } catch (e) {
     console.error(e);
   }
@@ -318,6 +466,42 @@ export const getPendaftaranUlang = async (id) => {
     console.error(e);
   }
 };
+export const getPendaftaran_ulangbyidsiswa = async (id) => {
+  try {
+    const pendaftaran_ulang = await db.select(
+      `SELECT * FROM pendaftaran_ulang WHERE id_siswa='` + id + `';`
+    );
+    return pendaftaran_ulang;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const create_siswa_Pendaftaran_ulang = async (id_kelas, dataform) => {
+  const pendaftaran_ulang = dataform.pendaftaran_ulang.replace("Rp.", "");
+  const pendaftaran_ulang_without_dot = pendaftaran_ulang.split(".").join("");
+  const nisn_atau_absen = dataform.nisn_no_absen;
+  try {
+    const siswa = await getSiswabyno_absen(id_kelas, nisn_atau_absen);
+    const id_siswa = siswa[0].id;
+    const isPendaftaran_ulangAda = await getPendaftaran_ulangbyidsiswa(
+      id_siswa
+    );
+    if (siswa.length > 0 && isPendaftaran_ulangAda.length == 0) {
+      await db.execute(
+        `INSERT INTO pendaftaran_ulang (jumlah_terbayar,jumlah_terhutang,id_siswa)
+    VALUES(0,` +
+          pendaftaran_ulang_without_dot +
+          `,'` +
+          id_siswa +
+          `');`
+      );
+    } else {
+      return true;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
 export const getLes = async (id) => {
   try {
     const les = await db.select(
@@ -326,6 +510,44 @@ export const getLes = async (id) => {
         `' ;`
     );
     return les;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const getLesbybulanidsiswa = async (bulan, id) => {
+  try {
+    const les = await db.select(
+      `SELECT * FROM les WHERE id_siswa='` + id + `' AND bulan='` + bulan + `';`
+    );
+    return les;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const create_siswa_les = async (id_kelas, bulan, dataform) => {
+  const les = dataform.les.replace("Rp.", "");
+  const les_without_dot = les.split(".").join("");
+  const nisn_atau_absen = dataform.nisn_no_absen;
+  try {
+    const siswa = await getSiswabyno_absen(id_kelas, nisn_atau_absen);
+    const id_siswa = siswa[0].id;
+    const isLesAda = await getLesbybulanidsiswa(bulan, id_siswa);
+    if (siswa.length > 0 && isLesAda.length == 0) {
+      await db.execute(
+        `INSERT INTO les (bulan,jumlah_terbayar,jumlah_terhutang,id_siswa)
+    VALUES('` +
+          bulan +
+          `',` +
+          0 +
+          `,` +
+          les_without_dot +
+          `,'` +
+          id_siswa +
+          `');`
+      );
+    } else {
+      return true;
+    }
   } catch (e) {
     console.error(e);
   }
@@ -342,6 +564,48 @@ export const getLesUN = async (id) => {
     console.error(e);
   }
 };
+export const getLesUNbybulanidsiswa = async (bulan, id) => {
+  try {
+    const lesun = await db.select(
+      `SELECT * FROM les_un WHERE id_siswa='` +
+        id +
+        `' AND bulan='` +
+        bulan +
+        `';`
+    );
+    return lesun;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const create_siswa_lesUN = async (id_kelas, bulan, dataform) => {
+  const lesun = dataform.lesun.replace("Rp.", "");
+  const lesun_without_dot = lesun.split(".").join("");
+  const nisn_atau_absen = dataform.nisn_no_absen;
+  try {
+    const siswa = await getSiswabyno_absen(id_kelas, nisn_atau_absen);
+    const id_siswa = siswa[0].id;
+    const isLesUNAda = await getLesUNbybulanidsiswa(bulan, id_siswa);
+    if (siswa.length > 0 && isLesUNAda.length == 0) {
+      await db.execute(
+        `INSERT INTO les_un (bulan,jumlah_terbayar,jumlah_terhutang,id_siswa)
+    VALUES('` +
+          bulan +
+          `',` +
+          0 +
+          `,` +
+          lesun_without_dot +
+          `,'` +
+          id_siswa +
+          `');`
+      );
+    } else {
+      return true;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
 export const getEkskul = async (id) => {
   try {
     const ekskul = await db.select(
@@ -350,6 +614,48 @@ export const getEkskul = async (id) => {
         `' ;`
     );
     return ekskul;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const getEkskulbybulanidsiswa = async (bulan, id) => {
+  try {
+    const ekskul = await db.select(
+      `SELECT * FROM ekskul WHERE id_siswa='` +
+        id +
+        `' AND bulan='` +
+        bulan +
+        `';`
+    );
+    return ekskul;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const create_siswa_ekskul = async (id_kelas, bulan, dataform) => {
+  const ekskul = dataform.ekskul.replace("Rp.", "");
+  const ekskul_without_dot = ekskul.split(".").join("");
+  const nisn_atau_absen = dataform.nisn_no_absen;
+  try {
+    const siswa = await getSiswabyno_absen(id_kelas, nisn_atau_absen);
+    const id_siswa = siswa[0].id;
+    const isEkskulAda = await getEkskulbybulanidsiswa(bulan, id_siswa);
+    if (siswa.length > 0 && isEkskulAda.length == 0) {
+      await db.execute(
+        `INSERT INTO ekskul (bulan,jumlah_terbayar,jumlah_terhutang,id_siswa)
+    VALUES('` +
+          bulan +
+          `',` +
+          0 +
+          `,` +
+          ekskul_without_dot +
+          `,'` +
+          id_siswa +
+          `');`
+      );
+    } else {
+      return true;
+    }
   } catch (e) {
     console.error(e);
   }
@@ -378,6 +684,40 @@ export const getBuku = async (id) => {
     console.error(e);
   }
 };
+export const getbukubyidsiswa = async (id) => {
+  try {
+    const buku = await db.select(
+      `SELECT * FROM buku WHERE id_siswa='` + id + `';`
+    );
+    return buku;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const create_siswa_buku = async (id_kelas, dataform) => {
+  const buku = dataform.buku.replace("Rp.", "");
+  const buku_without_dot = buku.split(".").join("");
+  const nisn_atau_absen = dataform.nisn_no_absen;
+  try {
+    const siswa = await getSiswabyno_absen(id_kelas, nisn_atau_absen);
+    const id_siswa = siswa[0].id;
+    const isbukuAda = await getbukubyidsiswa(id_siswa);
+    if (siswa.length > 0 && isbukuAda.length == 0) {
+      await db.execute(
+        `INSERT INTO buku (jumlah_terbayar,jumlah_terhutang,id_siswa)
+    VALUES(0,` +
+          buku_without_dot +
+          `,'` +
+          id_siswa +
+          `');`
+      );
+    } else {
+      return true;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
 export const getPakaian = async (id) => {
   try {
     const pakaian = await db.select(
@@ -386,6 +726,40 @@ export const getPakaian = async (id) => {
         `' ;`
     );
     return pakaian;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const getpakaianbyidsiswa = async (id) => {
+  try {
+    const pakaian = await db.select(
+      `SELECT * FROM pakaian WHERE id_siswa='` + id + `';`
+    );
+    return pakaian;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const create_siswa_pakaian = async (id_kelas, dataform) => {
+  const pakaian = dataform.pakaian.replace("Rp.", "");
+  const pakaian_without_dot = pakaian.split(".").join("");
+  const nisn_atau_absen = dataform.nisn_no_absen;
+  try {
+    const siswa = await getSiswabyno_absen(id_kelas, nisn_atau_absen);
+    const id_siswa = siswa[0].id;
+    const ispakaianAda = await getpakaianbyidsiswa(id_siswa);
+    if (siswa.length > 0 && ispakaianAda.length == 0) {
+      await db.execute(
+        `INSERT INTO pakaian (jumlah_terbayar,jumlah_terhutang,id_siswa)
+    VALUES(0,` +
+          pakaian_without_dot +
+          `,'` +
+          id_siswa +
+          `');`
+      );
+    } else {
+      return true;
+    }
   } catch (e) {
     console.error(e);
   }
@@ -404,16 +778,7 @@ export const test = async (username) => {
 };
 
 export default {
-  test,
-  Hello,
   CreateAllTable,
   makeAdminAccount,
-  checkUsername,
   makeDevAccount,
-  checkKelas,
-  create_kelas,
-  getKelas,
-  setTypeKelas,
-  getKelasByid,
-  getSPP,
 };

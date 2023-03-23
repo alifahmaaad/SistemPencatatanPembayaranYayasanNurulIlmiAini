@@ -17,7 +17,6 @@ const PilihKelas = ({ getIDkelas }) => {
       setRow(await getKelas(0));
     };
     getkelas();
-    console.log(rows);
   }, []);
   return (
     <Box margin="0 auto 0 auto" width={"95%"}>
@@ -26,6 +25,7 @@ const PilihKelas = ({ getIDkelas }) => {
         name="pilih_kelas"
         select
         required
+        focused
         disabled={rows.length == 0 ? true : false}
         fullWidth={true}
         label="Pilih Kelas"
