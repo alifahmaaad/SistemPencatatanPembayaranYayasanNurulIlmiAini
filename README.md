@@ -1,7 +1,12 @@
-# Tauri + React
+# Sistem Pembayaran Sekolah atau Aplikasi Keuangan Sekolah Nurul Ilmi Aini
 
-This template should help get you started developing with Tauri and React in Vite.
+Using Tauri + React JS + Material UI
+Using React Redux + React Router + bcryptjs + tauri-plugin-sql + sqlite database
 
-## Recommended IDE Setup
+dev : npm run tauri dev
+build : npm run tauri build
+windows build : tauri build --target i686-pc-windows-msvc or tauri build --target aarc64-pc-windows-msvc
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+## Fullstack
+
+## Develop by Ahmad Alif Sofian
