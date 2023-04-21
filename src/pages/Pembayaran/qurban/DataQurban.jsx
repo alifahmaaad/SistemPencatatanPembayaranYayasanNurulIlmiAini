@@ -175,7 +175,6 @@ const DataQurban = () => {
                   <br />
                 </DialogContentText>
                 <TextField
-                  focused
                   margin="dense"
                   name="bayar_Qurban"
                   id="bayar_Qurban"

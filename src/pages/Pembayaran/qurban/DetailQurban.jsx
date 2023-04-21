@@ -170,7 +170,7 @@ const DetailQurban = () => {
     //               {defaultterbayar.toLocaleString("id")}
     //             </DialogContentText>
     //             <TextField
-    //               focused
+    //
     //               margin="dense"
     //               name="jumlah_terhutang"
     //               id="jumlah_terhutang"

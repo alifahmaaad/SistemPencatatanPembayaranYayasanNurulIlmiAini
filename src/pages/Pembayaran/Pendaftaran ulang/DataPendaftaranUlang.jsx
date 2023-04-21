@@ -253,7 +253,6 @@ const Datapendaftaran_ulang = () => {
                     jumlahTerbayarPembayaran.toLocaleString("id")}
                 </DialogContentText>
                 <TextField
-                  focused
                   margin="dense"
                   name="bayar_pendaftaran_ulang"
                   id="bayar_pendaftaran_ulang"
@@ -339,7 +338,6 @@ const Datapendaftaran_ulang = () => {
                   {defaultTerhutang.toLocaleString("id")}
                 </DialogContentText>
                 <TextField
-                  focused
                   margin="dense"
                   name="jumlah_terbayar"
                   id="jumlah_terbayar"
@@ -353,7 +351,6 @@ const Datapendaftaran_ulang = () => {
                   variant="standard"
                 />
                 <TextField
-                  focused
                   margin="dense"
                   name="jumlah_terhutang"
                   id="jumlah_terhutang"

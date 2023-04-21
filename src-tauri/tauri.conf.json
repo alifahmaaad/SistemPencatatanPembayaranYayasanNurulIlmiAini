@@ -34,7 +34,7 @@
         "icons/icon.ico",
         "icons/icon.png"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "YayasanNurulIlmiAini",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
