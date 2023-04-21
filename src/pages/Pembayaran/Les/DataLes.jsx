@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import TableCustom from "../../component/TableCustom";
+import TableCustom from "../../../component/TableCustom";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { deletesiswa, getSiswa } from "../../Database/database";
-import Header from "../../component/Header";
-import PilihKelas from "../../component/PilihKelas";
-import { Alert, Box, Button } from "@mui/material";
-const DataSiswa = () => {
+import { getSiswa } from "../../../Database/database";
+import Header from "../../../component/Header";
+import PilihKelas from "../../../component/PilihKelas";
+import { Alert, Box, Button, Typography } from "@mui/material";
+import { buttonSX } from "../../../buttonsx";
+const DataLes = () => {
   const isLogin = useSelector((state) => state.isLogin);
   const [rows, setRow] = useState([]);
   const { state } = useLocation();
@@ -61,7 +62,7 @@ const DataSiswa = () => {
     {
       field: "nama",
       headerName: "Nama",
-      width: 200,
+      width: 180,
     },
     {
       field: "kelas",
@@ -73,15 +74,34 @@ const DataSiswa = () => {
       headerName: "NISN/NO ABSEN",
       width: 100,
     },
+    {
+      field: "Aksi",
+      sortable: false,
+      width: 200,
+      headerName: "Aksi",
+      renderCell: (cellValues) => {
+        return (
+          <div>
+            <Button
+              sx={buttonSX}
+              variant="contained"
+              color="primary"
+              onClick={async (event) => {
+                event.stopPropagation();
+                navigate(window.location.pathname + "/" + cellValues.row.id);
+              }}
+            >
+              <Typography fontSize={"10px"}>Detail Les Siswa</Typography>
+            </Button>
+          </div>
+        );
+      },
+    },
   ];
 
   return (
     <div>
-      <Header
-        title="Data Siswa"
-        button_tambah={isIdGet ? true : false}
-        idkelas={isIdGet}
-      />
+      <Header title="Data Les Siswa" button_tambah={false} idkelas={isIdGet} />
       {!isIdGet && (
         <Box paddingBottom={"0.5rem"}>
           <Alert severity="info">Silahkan Pilih Kelas Terlebih Dahulu</Alert>
@@ -97,12 +117,18 @@ const DataSiswa = () => {
       <PilihKelas getIDkelas={getIDkelas} />
       {isIdGet && (
         <div>
+          <Box paddingTop={"0.5rem"}>
+            <Alert severity="info">
+              Untuk Melihat Detail Pembayaran Les klikk tombol "Detail Les
+              Siswa"
+            </Alert>
+          </Box>
           <TableCustom
             rows={rows}
             columns={columnss}
             sortmodel={sortModel}
             loading={loading}
-            title={"siswa"}
+            isDelDisable={true}
           />
         </div>
       )}
@@ -110,4 +136,4 @@ const DataSiswa = () => {
   );
 };
 
-export default DataSiswa;
+export default DataLes;

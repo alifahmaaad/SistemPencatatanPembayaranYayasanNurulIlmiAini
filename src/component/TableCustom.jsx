@@ -1,6 +1,12 @@
-import { Box, Typography, Button, CardContent, Card } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  CardContent,
+  Card,
+  Alert,
+} from "@mui/material";
 import React, { useState } from "react";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   DataGrid,
@@ -8,48 +14,190 @@ import {
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
-function CustomToolbar() {
+import { GridToolbarExport } from "@mui/x-data-grid";
+import { delete_spp_siswa_by_id } from "../Database/SPP/dbspp";
+import { delete_qurban_siswa_by_id } from "../Database/qurban/dbqurban";
+import { delete_pendaftaran_ulang_siswa_by_id } from "../Database/pendaftaranulang/dbpendaftaranulang";
+import { delete_pendaftaran_siswa_by_id } from "../Database/pendaftaran/dbpendaftaran";
+import { delete_pakaian_siswa_by_id } from "../Database/pakaian/dbpakaian";
+import { delete_les_un_siswa_by_id } from "../Database/lesun/dblesun";
+import { delete_les_siswa_by_id } from "../Database/Les/dbles";
+import { delete_komite_siswa_by_id } from "../Database/Komite/dbkomite";
+import { delete_ekskul_siswa_by_id } from "../Database/ekskul/dbekskul";
+import { delete_buku_siswa_by_id } from "../Database/buku/dbbuku";
+import { deletekelas, deletesiswa } from "../Database/database";
+const deleteData = async (selectionModel, title, reset) => {
+  switch (title) {
+    case "spp":
+      await delete_spp_siswa_by_id(selectionModel);
+      reset();
+      break;
+    case "Qurban":
+      await delete_qurban_siswa_by_id(selectionModel);
+      reset();
+      break;
+    case "pendaftaran_ulang":
+      await delete_pendaftaran_ulang_siswa_by_id(selectionModel);
+      reset();
+      break;
+    case "pendaftaran":
+      await delete_pendaftaran_siswa_by_id(selectionModel);
+      reset();
+      break;
+    case "pakaian":
+      await delete_pakaian_siswa_by_id(selectionModel);
+      reset();
+      break;
+    case "les_un":
+      await delete_les_un_siswa_by_id(selectionModel);
+      reset();
+      break;
+    case "les":
+      await delete_les_siswa_by_id(selectionModel);
+      reset();
+      break;
+    case "komite":
+      await delete_komite_siswa_by_id(selectionModel);
+      reset();
+      break;
+    case "ekskul":
+      await delete_ekskul_siswa_by_id(selectionModel);
+      reset();
+      break;
+    case "buku":
+      await delete_buku_siswa_by_id(selectionModel);
+      reset();
+      break;
+    case "siswa":
+      await deletesiswa(selectionModel);
+      break;
+    case "kelas":
+      await deletekelas(selectionModel);
+      break;
+    default:
+      break;
+  }
+};
+const bulan = [
+  "Januari",
+  "Februari",
+  "Maret",
+  "April",
+  "Mei",
+  "Juni",
+  "Juli",
+  "Agustus",
+  "September",
+  "Oktober",
+  "November",
+  "Desember",
+];
+function CustomToolbar({
+  selectionModel,
+  deldisable,
+  title,
+  tanggal,
+  total,
+  reset,
+}) {
   return (
     <GridToolbarContainer sx={{ color: "red" }}>
       <GridToolbarColumnsButton sx={{ boxShadow: 0, color: "#53c79e" }} />
       <GridToolbarFilterButton sx={{ boxShadow: 0, color: "#53c79e" }} />
-      <Button
-        sx={{
-          boxShadow: 0,
-          padding: "4px 5px",
-          textTransform: "none !important",
-          color: "#53c79e",
+      <GridToolbarExport
+        sx={{ boxShadow: 0, color: "#53c79e" }}
+        csvOptions={{
+          fileName: title,
+          delimiter: ";",
+          utf8WithBom: true,
         }}
-      >
-        <FileDownloadIcon sx={{ paddingRight: "0.5rem" }} />{" "}
-        <Typography textTransform="uppercase" fontSize={"13px"}>
-          Export
+      />
+      {!deldisable && (
+        <Button
+          sx={{
+            boxShadow: 0,
+            padding: "4px 5px",
+            textTransform: "none !important",
+            color: "#d32f2f",
+          }}
+          onClick={() => deleteData(selectionModel, title, reset)}
+        >
+          <DeleteIcon sx={{ paddingRight: "0.5rem" }} />
+          <Typography textTransform="uppercase" fontSize={"13px"}>
+            Delete
+          </Typography>
+        </Button>
+      )}
+      {(title == "siswa") & (selectionModel.length > 0) ? (
+        <Box padding={"0.5rem 0 0 0"}>
+          <Alert severity="error">
+            Menghapus Data Siswa Akan menghapus Seluruh data pada pembayaran dan
+            History Pembayaran (Harap download laporan harian atau bulanan
+            terlebih dahulu jika diperlukan)
+          </Alert>
+        </Box>
+      ) : null}
+      {(title == "kelas") & (selectionModel.length > 0) ? (
+        <Box padding={"0.5rem 0 0 0"}>
+          <Alert severity="error">
+            Menghapus Data Kelas Akan menghapus Seluruh data siswa pada kelas,
+            pembayaran dan History Pembayaran (Harap download laporan harian
+            atau bulanan terlebih dahulu jika diperlukan)
+          </Alert>
+        </Box>
+      ) : null}
+      {title == "Data Laporan Bulanan" && (
+        <Typography
+          margin="1rem auto 0 auto"
+          width={"95%"}
+          color={"black"}
+          fontWeight={"bold"}
+        >
+          {"Total Pembayaran Pada Bulan " +
+            bulan[tanggal.$M] +
+            " " +
+            tanggal.$y +
+            " = Rp." +
+            total.toLocaleString("id")}
         </Typography>
-      </Button>
-      <Button
-        sx={{
-          boxShadow: 0,
-          padding: "4px 5px",
-          textTransform: "none !important",
-          color: "#53c79e",
-        }}
-      >
-        <DeleteIcon sx={{ paddingRight: "0.5rem" }} />{" "}
-        <Typography textTransform="uppercase" fontSize={"13px"}>
-          Delete
+      )}
+      {title == "Data Laporan Harian" && (
+        <Typography
+          margin="1rem auto 0 auto"
+          width={"95%"}
+          color={"black"}
+          fontWeight={"bold"}
+        >
+          {"Total Pembayaran Pada Tanggal " +
+            tanggal.$D +
+            " " +
+            bulan[tanggal.$M] +
+            " " +
+            tanggal.$y +
+            " = Rp." +
+            total.toLocaleString("id")}
         </Typography>
-      </Button>
+      )}
     </GridToolbarContainer>
   );
 }
-const TableCustom = ({ rows, columns, loading, sortmodel }) => {
+const TableCustom = ({
+  rows,
+  columns,
+  loading,
+  sortmodel,
+  isDelDisable,
+  title,
+  tanggal,
+  total,
+  reset,
+}) => {
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
-
   return (
     <Box>
       <Card variant="outlined" sx={{ margin: "1rem 0" }}>
         <CardContent>
-          <Box sx={{ borderColor: "white", height: 404.5, padding: "1rem 0" }}>
+          <Box sx={{ borderColor: "white", height: 425, padding: "1rem 0" }}>
             <DataGrid
               loading={loading}
               checkboxSelection
@@ -63,11 +211,22 @@ const TableCustom = ({ rows, columns, loading, sortmodel }) => {
                   sortModel: sortmodel,
                 },
               }}
-              rowSelectionModel={rowSelectionModel}
+              selectionModel={rowSelectionModel}
               rows={rows}
               columns={columns}
               components={{
                 Toolbar: CustomToolbar,
+              }}
+              componentsProps={{
+                toolbar: {
+                  rows: rows,
+                  selectionModel: rowSelectionModel,
+                  deldisable: isDelDisable,
+                  title: title,
+                  tanggal: tanggal,
+                  total: total,
+                  reset: reset,
+                },
               }}
               pageSize={5}
               rowsPerPageOptions={[5]}

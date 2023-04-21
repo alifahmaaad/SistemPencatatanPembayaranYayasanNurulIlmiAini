@@ -106,17 +106,6 @@ const DaftarKelas = () => {
                 {isPageArchive ? "Aktifkan kelas" : "Arsipkan Kelas"}
               </Typography>
             </Button>
-            <Button
-              sx={buttonSX}
-              variant="contained"
-              color="primary"
-              onClick={async (event) => {
-                event.stopPropagation();
-                // await setTypeKelas(1, cellValues.row.id);
-              }}
-            >
-              <Typography fontSize={"10px"}>Detail Kelas</Typography>
-            </Button>
           </div>
         );
       },
@@ -155,7 +144,12 @@ const DaftarKelas = () => {
           <Alert severity="success">Data berhasil Ditambahkan</Alert>
         </Box>
       )}
-      <TableCustom rows={rows} columns={columns} loading={loading} />
+      <TableCustom
+        rows={rows}
+        columns={columns}
+        loading={loading}
+        title={"kelas"}
+      />
     </div>
   );
 };
