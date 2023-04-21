@@ -190,7 +190,6 @@ const CreateSiswa = () => {
               id="input nama_siswa"
               name="nama_siswa"
               required
-              focused
               label="Nama Siswa"
               variant="standard"
               fullWidth={true}
@@ -202,7 +201,6 @@ const CreateSiswa = () => {
               id="input nisn_no_absen"
               name="nisn_no_absen"
               required
-              focused
               label="NISN / NO ABSEN"
               variant="standard"
               fullWidth={true}
@@ -235,7 +233,6 @@ const CreateSiswa = () => {
               name="pendaftaran"
               label="Tagihan pendaftaran"
               required
-              focused
               InputProps={{
                 inputComponent: FormatAngka,
               }}
@@ -250,7 +247,6 @@ const CreateSiswa = () => {
               name="pendaftaran_ulang"
               label="Tagihan pendaftaran_ulang"
               required
-              focused
               InputProps={{
                 inputComponent: FormatAngka,
               }}
@@ -276,7 +272,6 @@ const CreateSiswa = () => {
               name="buku"
               label="Tagihan Buku"
               required
-              focused
               InputProps={{
                 inputComponent: FormatAngka,
               }}
@@ -291,7 +286,6 @@ const CreateSiswa = () => {
               name="pakaian"
               label="Tagihan Pakaian"
               required
-              focused
               InputProps={{
                 inputComponent: FormatAngka,
               }}

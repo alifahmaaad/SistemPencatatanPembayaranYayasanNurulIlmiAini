@@ -257,7 +257,6 @@ const DetailKomite = () => {
                     jumlahTerbayarPembayaran.toLocaleString("id")}
                 </DialogContentText>
                 <TextField
-                  focused
                   margin="dense"
                   name="bayar_Komite"
                   id="bayar_Komite"
@@ -345,7 +344,6 @@ const DetailKomite = () => {
                   {defaultTerhutang.toLocaleString("id")}
                 </DialogContentText>
                 <TextField
-                  focused
                   margin="dense"
                   name="jumlah_terbayar"
                   id="jumlah_terbayar"
@@ -359,7 +357,6 @@ const DetailKomite = () => {
                   variant="standard"
                 />
                 <TextField
-                  focused
                   margin="dense"
                   name="jumlah_terhutang"
                   id="jumlah_terhutang"

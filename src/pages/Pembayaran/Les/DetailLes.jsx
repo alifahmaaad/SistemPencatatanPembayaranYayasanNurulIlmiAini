@@ -246,7 +246,6 @@ const DetailLes = () => {
                     jumlahTerbayarPembayaran.toLocaleString("id")}
                 </DialogContentText>
                 <TextField
-                  focused
                   margin="dense"
                   name="bayar_Les"
                   id="bayar_Les"
@@ -334,7 +333,6 @@ const DetailLes = () => {
                   {defaultTerhutang.toLocaleString("id")}
                 </DialogContentText>
                 <TextField
-                  focused
                   margin="dense"
                   name="jumlah_terbayar"
                   id="jumlah_terbayar"
@@ -348,7 +346,6 @@ const DetailLes = () => {
                   variant="standard"
                 />
                 <TextField
-                  focused
                   margin="dense"
                   name="jumlah_terhutang"
                   id="jumlah_terhutang"

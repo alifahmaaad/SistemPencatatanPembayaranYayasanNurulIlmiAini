@@ -25,7 +25,6 @@ const PilihKelas = ({ getIDkelas }) => {
         name="pilih_kelas"
         select
         required
-        focused
         disabled={rows.length == 0 ? true : false}
         fullWidth={true}
         label="Pilih Kelas"

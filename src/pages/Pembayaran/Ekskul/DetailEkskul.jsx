@@ -257,7 +257,6 @@ const DetailEkskul = () => {
                     jumlahTerbayarPembayaran.toLocaleString("id")}
                 </DialogContentText>
                 <TextField
-                  focused
                   margin="dense"
                   name="bayar_Ekskul"
                   id="bayar_Ekskul"
@@ -345,7 +344,6 @@ const DetailEkskul = () => {
                   {defaultTerhutang.toLocaleString("id")}
                 </DialogContentText>
                 <TextField
-                  focused
                   margin="dense"
                   name="jumlah_terbayar"
                   id="jumlah_terbayar"
@@ -359,7 +357,6 @@ const DetailEkskul = () => {
                   variant="standard"
                 />
                 <TextField
-                  focused
                   margin="dense"
                   name="jumlah_terhutang"
                   id="jumlah_terhutang"

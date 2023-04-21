@@ -14,19 +14,23 @@ const DataSiswa = () => {
   const [isNewdata, setIsNewdata] = useState(false);
   const [loading, setLoading] = useState(true);
   const [namakelas, setNamakelas] = useState("testest");
+  const [reseter, setReseter] = useState(0);
   const navigate = useNavigate();
   useEffect(() => {
     if (!isLogin) {
       navigate("/Login");
     }
   }, [isLogin]);
+  const reset = () => {
+    setReseter(reseter + 1);
+  };
   useEffect(() => {
     const getSiswafromdb = async () => {
       setRow(await getSiswa(isIdGet));
       setLoading(false);
     };
     getSiswafromdb();
-  }, [isIdGet]);
+  }, [isIdGet, reseter]);
   useEffect(() => {
     if (state == null) {
       return undefined;
@@ -103,6 +107,7 @@ const DataSiswa = () => {
             sortmodel={sortModel}
             loading={loading}
             title={"siswa"}
+            reset={reset}
           />
         </div>
       )}

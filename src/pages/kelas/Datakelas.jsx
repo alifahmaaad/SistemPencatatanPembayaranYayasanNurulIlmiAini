@@ -22,12 +22,16 @@ const DaftarKelas = () => {
   const [loading, setLoading] = useState(true);
   const [typeClass, setTypeClass] = useState(0);
   const [isPageArchive, setPageArchive] = useState(false);
+  const [reseter, setReseter] = useState(0);
   // const { value } = state;
   useEffect(() => {
     if (!isLogin) {
       navigate("/Login");
     }
   }, [isLogin]);
+  const reset = () => {
+    setReseter(reseter + 1);
+  };
   useEffect(() => {
     if (state == null) {
       return undefined;
@@ -54,7 +58,7 @@ const DaftarKelas = () => {
       setLoading(false);
     };
     getkelas();
-  }, [isPageArchive, typeClass]);
+  }, [isPageArchive, typeClass, reseter]);
   const getTypeClass = (val) => {
     if (val == 0) {
       setPageArchive(false);
@@ -121,7 +125,6 @@ const DaftarKelas = () => {
           name="tipe_kelas"
           select
           required
-          focused
           fullWidth={true}
           label="Pilih Kelas"
           defaultValue="0"
@@ -149,6 +152,7 @@ const DaftarKelas = () => {
         columns={columns}
         loading={loading}
         title={"kelas"}
+        reset={reset}
       />
     </div>
   );

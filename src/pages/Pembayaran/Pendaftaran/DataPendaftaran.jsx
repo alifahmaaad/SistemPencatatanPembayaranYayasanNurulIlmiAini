@@ -253,7 +253,6 @@ const DataPendaftaran = () => {
                     jumlahTerbayarPembayaran.toLocaleString("id")}
                 </DialogContentText>
                 <TextField
-                  focused
                   margin="dense"
                   name="bayar_Pendaftaran"
                   id="bayar_Pendaftaran"
@@ -339,7 +338,6 @@ const DataPendaftaran = () => {
                   {defaultTerhutang.toLocaleString("id")}
                 </DialogContentText>
                 <TextField
-                  focused
                   margin="dense"
                   name="jumlah_terbayar"
                   id="jumlah_terbayar"
@@ -353,7 +351,6 @@ const DataPendaftaran = () => {
                   variant="standard"
                 />
                 <TextField
-                  focused
                   margin="dense"
                   name="jumlah_terhutang"
                   id="jumlah_terhutang"

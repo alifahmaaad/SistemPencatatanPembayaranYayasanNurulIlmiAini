@@ -76,7 +76,6 @@ const CheckboxBulan = (props) => {
         id={"input " + props.jenis}
         name={props.jenis}
         required
-        focused
         InputProps={{
           inputComponent: NumericFormatCustom,
         }}
