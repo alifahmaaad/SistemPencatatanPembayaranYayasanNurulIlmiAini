@@ -7,7 +7,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "sistem-pembayaran-sekolah",
+    "productName": "sistem-keuangan-sekolah-nurul-ilmi-aini",
     "version": "0.0.0"
   },
   "tauri": {
@@ -31,7 +31,8 @@
         "icons/128x128.png",
         "icons/128x128@2x.png",
         "icons/icon.icns",
-        "icons/icon.ico"
+        "icons/icon.ico",
+        "icons/icon.png"
       ],
       "identifier": "com.tauri.dev",
       "longDescription": "",
@@ -62,7 +63,7 @@
         "fullscreen": false,
         "height": 650,
         "resizable": true,
-        "title": "sistem-pembayaran-sekolah",
+        "title": "Sistem keuangan Sekolah Yayasan Nurul Ilmi Aini",
         "width": 1000
       }
     ]
