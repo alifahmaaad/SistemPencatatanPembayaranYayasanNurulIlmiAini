@@ -24,6 +24,7 @@ const Header = ({ title, button_tambah, idkelas }) => {
             variant="p"
             color={"#53c79e"}
             fontStyle={"italic"}
+            className="new-line"
           >
             {title}
           </Typography>
