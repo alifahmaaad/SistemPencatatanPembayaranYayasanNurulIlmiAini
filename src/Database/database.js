@@ -78,8 +78,9 @@ CREATE TABLE IF NOT EXISTS les
 
 CREATE TABLE IF NOT EXISTS qurban
 ( id INTEGER PRIMARY KEY AUTOINCREMENT,
-  jumlah INTEGER NOT NULL,
-  tanggal TEXT NOT NULL,
+  jumlah_terhutang INTEGER NOT NULL,
+  jumlah_terbayar INTEGER NOT NULL,
+  bulan TEXT NOT NULL,
   id_siswa INTEGER NOT NULL,
   FOREIGN KEY (id_siswa) REFERENCES siswa(id) ON DELETE CASCADE
 );
@@ -145,8 +146,8 @@ CREATE TABLE IF NOT EXISTS history_bayar
 };
 export const makeAdminAccount = async () => {
   try {
-    const username = "admin123";
-    const myPlaintextPassword = "admin123";
+    const username = "demo";
+    const myPlaintextPassword = "demo";
     const role = 1;
     const hashpassword = bcrypt.hashSync(myPlaintextPassword, 10);
     await db.execute(
@@ -423,6 +424,20 @@ export const deletekelas = async (id) => {
   try {
     const id_with_sym = id.map((i) => `'${i}'`);
     await db.execute(`DELETE FROM kelas WHERE id IN (` + id_with_sym + `);`);
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const checktable = async (id) => {
+  try {
+    const val = await db.select(
+      `SELECT name FROM sqlite_master WHERE type='table' AND name='kelas'`
+    );
+    if (val.length == 0) {
+      localStorage.clear();
+      window.location.reload();
+    }
+    return val;
   } catch (e) {
     console.error(e);
   }

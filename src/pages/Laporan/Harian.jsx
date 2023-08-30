@@ -21,6 +21,7 @@ const DataHarian = () => {
   const [isIdGet, setisIdGet] = useState();
   const [isNewdata, setIsNewdata] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [reseter, setReseter] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +35,7 @@ const DataHarian = () => {
       setLoading(false);
     };
     getSiswafromdb();
-  }, [isIdGet, tanggal]);
+  }, [isIdGet, tanggal, reseter]);
   useEffect(() => {
     if (state == null) {
       return undefined;
@@ -77,16 +78,6 @@ const DataHarian = () => {
       width: 180,
     },
     {
-      field: "jenis_nama",
-      headerName: "Jenis Pembayaran",
-      width: 180,
-    },
-    {
-      field: "jenis_bulan",
-      headerName: "Jenis Bulan",
-      width: 180,
-    },
-    {
       field: "jumlah_bayar",
       headerName: "Jumlah",
       width: 180,
@@ -98,10 +89,22 @@ const DataHarian = () => {
       valueGetter: (cellValues) =>
         "Rp." + cellValues.row.jumlah_bayar.toLocaleString("de-DE"),
     },
+    {
+      field: "jenis_nama",
+      headerName: "Jenis Pembayaran",
+      width: 180,
+    },
+    {
+      field: "jenis_bulan",
+      headerName: "Jenis Bulan",
+      width: 180,
+    },
   ];
 
   const total = rows.reduce((a, item) => (a = a + item.jumlah_bayar), 0);
-
+  const reset = () => {
+    setReseter(reseter + 1);
+  };
   return (
     <div>
       <Header
@@ -144,25 +147,16 @@ const DataHarian = () => {
               />
             </Box>
           </LocalizationProvider>
-          {/* <Typography margin="1rem auto 0 auto" width={"95%"}>
-            {"Total Pembayaran Pada Tanggal " +
-              tanggal.$D +
-              " " +
-              bulan[tanggal.$M] +
-              " " +
-              tanggal.$y +
-              " = Rp." +
-              total.toLocaleString("id")}
-          </Typography> */}
+
           <TableCustom
             rows={rows}
             columns={columnss}
             sortmodel={sortModel}
             loading={loading}
-            isDelDisable={true}
             title={"Data Laporan Harian"}
             tanggal={tanggal}
             total={total}
+            reset={reset}
           />
         </div>
       )}

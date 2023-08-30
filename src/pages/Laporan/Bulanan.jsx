@@ -33,6 +33,7 @@ const DataBulanan = () => {
   const [isIdGet, setisIdGet] = useState();
   const [isNewdata, setIsNewdata] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [reseter, setReseter] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const DataBulanan = () => {
       setLoading(false);
     };
     getSiswafromdb();
-  }, [isIdGet, tanggal]);
+  }, [isIdGet, tanggal, reseter]);
   useEffect(() => {
     if (state == null) {
       return undefined;
@@ -89,16 +90,6 @@ const DataBulanan = () => {
       width: 180,
     },
     {
-      field: "jenis_nama",
-      headerName: "Jenis Pembayaran",
-      width: 180,
-    },
-    {
-      field: "jenis_bulan",
-      headerName: "Jenis Bulan",
-      width: 180,
-    },
-    {
       field: "jumlah_bayar",
       headerName: "Jumlah",
       width: 180,
@@ -110,8 +101,21 @@ const DataBulanan = () => {
       valueGetter: (cellValues) =>
         "Rp." + cellValues.row.jumlah_bayar.toLocaleString("de-DE"),
     },
+    {
+      field: "jenis_nama",
+      headerName: "Jenis Pembayaran",
+      width: 180,
+    },
+    {
+      field: "jenis_bulan",
+      headerName: "Jenis Bulan",
+      width: 180,
+    },
   ];
   const total = rows.reduce((a, item) => (a = a + item.jumlah_bayar), 0);
+  const reset = () => {
+    setReseter(reseter + 1);
+  };
   return (
     <div>
       <Header
@@ -161,22 +165,15 @@ const DataBulanan = () => {
               />
             </Box>
           </LocalizationProvider>
-          {/* <Typography margin="1rem auto 0 auto" width={"95%"}>
-            {"Total Pembayaran Pada Bulan " +
-              bulan[tanggal.$M] +
-              " " +
-              " = Rp." +
-              total.toLocaleString("id")}
-          </Typography> */}
           <TableCustom
             rows={rows}
             columns={columnss}
             sortmodel={sortModel}
             loading={loading}
-            isDelDisable={true}
             title={"Data Laporan Bulanan"}
             tanggal={tanggal}
             total={total}
+            reset={reset}
           />
         </div>
       )}

@@ -6,7 +6,7 @@ export const getKomite = async (id) => {
     const komite = await db.select(
       `SELECT *,komite.id as id FROM komite INNER JOIN siswa ON komite.id_siswa = siswa.id INNER JOIN kelas ON siswa.id_kelas = kelas.id WHERE komite.id_siswa =` +
         id +
-        ` ;`
+        `;`
     );
     return komite;
   } catch (e) {

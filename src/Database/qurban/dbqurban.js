@@ -1,6 +1,6 @@
 import Database from "tauri-plugin-sql-api";
 const db = await Database.load("sqlite:Sistem Keuangan Nurul Ilmi Aini.db");
-
+import { getSiswabyno_absen } from "../database";
 export const getQurban = async (id) => {
   try {
     const qurban = await db.select(
@@ -13,38 +13,13 @@ export const getQurban = async (id) => {
     console.error(e);
   }
 };
-export const getQurbanbyidsiswa = async (id) => {
+export const getQurbanbybulanidsiswa = async (bulan, id) => {
   try {
     const qurban = await db.select(
-      `SELECT * FROM qurban WHERE id_siswa='` + id + `';`
-    );
-    return qurban;
-  } catch (e) {
-    console.error(e);
-  }
-};
-export const create_siswa_Qurban = async (jumlah, id_siswa) => {
-  try {
-    const tanggal = new Date().toLocaleDateString("id");
-    await db.execute(
-      `INSERT INTO qurban (jumlah,tanggal,id_siswa)
-    VALUES(` +
-        jumlah +
-        `,'` +
-        tanggal +
-        `','` +
-        id_siswa +
-        `');`
-    );
-  } catch (e) {
-    console.error(e);
-  }
-};
-export const getQurbanbyidkelas = async (id) => {
-  try {
-    const qurban = await db.select(
-      `SELECT *,qurban.id as id FROM kelas INNER JOIN siswa ON kelas.id = siswa.id_kelas INNER JOIN qurban ON siswa.id = qurban.id_siswa WHERE kelas.id='` +
+      `SELECT * FROM qurban WHERE id_siswa='` +
         id +
+        `' AND bulan='` +
+        bulan +
         `';`
     );
     return qurban;
@@ -52,11 +27,93 @@ export const getQurbanbyidkelas = async (id) => {
     console.error(e);
   }
 };
+export const create_siswa_qurban = async (id_kelas, bulan, dataform) => {
+  console.log(dataform.qurban);
+  const qurban = dataform.qurban.replace("Rp.", "");
+  console.log(qurban);
+  const qurban_without_dot = qurban.split(".").join("");
+  const nisn_atau_absen = dataform.nisn_no_absen;
+  try {
+    const siswa = await getSiswabyno_absen(id_kelas, nisn_atau_absen);
+    const id_siswa = siswa[0].id;
+    const isQurbanAda = await getQurbanbybulanidsiswa(bulan, id_siswa);
+    if (siswa.length > 0 && isQurbanAda.length == 0) {
+      await db.execute(
+        `INSERT INTO qurban (bulan,jumlah_terbayar,jumlah_terhutang,id_siswa)
+    VALUES('` +
+          bulan +
+          `',` +
+          0 +
+          `,` +
+          qurban_without_dot +
+          `,'` +
+          id_siswa +
+          `');`
+      );
+    } else {
+      return true;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const setQurbanBayar = async (id, jumlah) => {
+  try {
+    await db.execute(
+      `UPDATE qurban SET jumlah_terbayar = ` + jumlah + ` WHERE id =` + id + `;`
+    );
+  } catch (e) {
+    console.error(e);
+  }
+};
 export const editQurban = async (id, jumlah) => {
   try {
     await db.execute(
-      `UPDATE qurban SET jumlah = ` + jumlah + ` WHERE id =` + id + `;`
+      `UPDATE qurban SET jumlah_terhutang = ` +
+        jumlah +
+        ` WHERE id =` +
+        id +
+        `;`
     );
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const getBulanbyIdSiswa = async (id) => {
+  try {
+    const qurban = await db.select(
+      `SELECT bulan FROM qurban WHERE id_siswa='` + id + `';`
+    );
+    return qurban;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const create_siswa_qurban_by_id_siswa = async (
+  id_siswa,
+  bulan,
+  dataform
+) => {
+  const qurban = dataform.qurban.replace("Rp.", "");
+  const qurban_without_dot = qurban.split(".").join("");
+  try {
+    const isQurbanAda = await getQurbanbybulanidsiswa(bulan, id_siswa);
+    if (isQurbanAda.length == 0) {
+      await db.execute(
+        `INSERT INTO qurban (bulan,jumlah_terbayar,jumlah_terhutang,id_siswa)
+    VALUES('` +
+          bulan +
+          `',` +
+          0 +
+          `,` +
+          qurban_without_dot +
+          `,'` +
+          id_siswa +
+          `');`
+      );
+    } else {
+      return true;
+    }
   } catch (e) {
     console.error(e);
   }

@@ -15,3 +15,13 @@ export const getLaporanHarian = async (id, tanggal) => {
     console.error(e);
   }
 };
+export const delete_harian_siswa_by_id = async (id) => {
+  try {
+    const id_with_sym = id.map((i) => `'${i}'`);
+    await db.execute(
+      `DELETE FROM history_bayar WHERE id IN (` + id_with_sym + `);`
+    );
+  } catch (e) {
+    console.error(e);
+  }
+};

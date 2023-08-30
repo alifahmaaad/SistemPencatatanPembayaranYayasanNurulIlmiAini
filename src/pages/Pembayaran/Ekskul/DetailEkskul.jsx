@@ -253,8 +253,9 @@ const DetailEkskul = () => {
                   {jumlahTerhutangPembayaran.toLocaleString("id")}
                   <br />
                   Tagihan <span> : </span>Rp.
-                  {jumlahTerhutangPembayaran.toLocaleString("id") -
-                    jumlahTerbayarPembayaran.toLocaleString("id")}
+                  {(
+                    jumlahTerhutangPembayaran - jumlahTerbayarPembayaran
+                  ).toLocaleString("id")}
                 </DialogContentText>
                 <TextField
                   margin="dense"
@@ -391,7 +392,20 @@ const DetailEkskul = () => {
         );
       },
     },
+    {
+      field: "jumlah-terbayar",
+      headerName: "Jumlah Terbayar",
+      width: 100,
+      renderCell: (cellValues) => {
+        return (
+          <div>Rp.{cellValues.row.jumlah_terbayar.toLocaleString("de-DE")}</div>
+        );
+      },
+      valueGetter: (cellValues) =>
+        "Rp." + cellValues.row.jumlah_terbayar.toLocaleString("de-DE"),
+    },
   ];
+  const total = rows.reduce((a, item) => (a = a + item.jumlah_terbayar), 0);
   return (
     <div>
       <Header
@@ -406,6 +420,7 @@ const DetailEkskul = () => {
           loading={loading}
           title={"ekskul"}
           reset={reset}
+          total={total}
         />
       </div>
     </div>
