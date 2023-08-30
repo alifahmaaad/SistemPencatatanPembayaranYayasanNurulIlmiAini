@@ -5,7 +5,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { deletesiswa, getSiswa } from "../../Database/database";
 import Header from "../../component/Header";
 import PilihKelas from "../../component/PilihKelas";
-import { Alert, Box, Button } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { buttonSX } from "../../buttonsx";
 const DataSiswa = () => {
   const isLogin = useSelector((state) => state.isLogin);
   const [rows, setRow] = useState([]);
@@ -76,6 +87,48 @@ const DataSiswa = () => {
       field: "nisn_atau_no_absen",
       headerName: "NISN/NO ABSEN",
       width: 100,
+    },
+    {
+      field: "Aksi",
+      sortable: false,
+      width: 350,
+      headerName: "Aksi",
+      renderCell: (cellValues) => {
+        return (
+          <div>
+            <Button
+              sx={buttonSX}
+              variant="contained"
+              color="primary"
+              onClick={async (event) => {
+                event.stopPropagation();
+                navigate(
+                  window.location.pathname +
+                    "/DetailTagihan/" +
+                    cellValues.row.id
+                );
+              }}
+            >
+              <Typography fontSize={"10px"}>Detail Tagihan Siswa</Typography>
+            </Button>
+            <Button
+              sx={buttonSX}
+              variant="contained"
+              color="primary"
+              onClick={async (event) => {
+                event.stopPropagation();
+                navigate(
+                  window.location.pathname +
+                    "/DetailTerbayar/" +
+                    cellValues.row.id
+                );
+              }}
+            >
+              <Typography fontSize={"10px"}>Detail Pembayaran Siswa</Typography>
+            </Button>
+          </div>
+        );
+      },
     },
   ];
 

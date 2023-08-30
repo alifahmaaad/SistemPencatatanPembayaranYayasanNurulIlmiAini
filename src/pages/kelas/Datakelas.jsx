@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TableCustom from "../../component/TableCustom";
 import { useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Await, useLocation, useNavigate } from "react-router-dom";
 import {
   Alert,
   Box,
@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { getKelas, setTypeKelas } from "../../Database/database";
+import { checktable, getKelas, setTypeKelas } from "../../Database/database";
 import Header from "../../component/Header";
 import { buttonSX } from "../../buttonsx";
 const DaftarKelas = () => {
@@ -23,6 +23,7 @@ const DaftarKelas = () => {
   const [typeClass, setTypeClass] = useState(0);
   const [isPageArchive, setPageArchive] = useState(false);
   const [reseter, setReseter] = useState(0);
+  const [val, setVal] = useState([]);
   // const { value } = state;
   useEffect(() => {
     if (!isLogin) {
@@ -46,6 +47,14 @@ const DaftarKelas = () => {
       return () => {
         clearTimeout(timeId);
       };
+    }
+  }, []);
+  useEffect(() => {
+    const checkdb = async () => {
+      await checktable();
+    };
+    if (localStorage.getItem("setup") != null) {
+      setVal(checkdb());
     }
   }, []);
   useEffect(() => {

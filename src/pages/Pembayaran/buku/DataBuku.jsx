@@ -242,8 +242,9 @@ const Databuku = () => {
                   {jumlahTerhutangPembayaran.toLocaleString("id")}
                   <br />
                   Tagihan <span> : </span>Rp.
-                  {jumlahTerhutangPembayaran.toLocaleString("id") -
-                    jumlahTerbayarPembayaran.toLocaleString("id")}
+                  {(
+                    jumlahTerhutangPembayaran - jumlahTerbayarPembayaran
+                  ).toLocaleString("id")}
                 </DialogContentText>
                 <TextField
                   margin="dense"
@@ -377,6 +378,18 @@ const Databuku = () => {
           </div>
         );
       },
+    },
+    {
+      field: "jumlah-terbayar",
+      headerName: "Jumlah Terbayar",
+      width: 100,
+      renderCell: (cellValues) => {
+        return (
+          <div>Rp.{cellValues.row.jumlah_terbayar.toLocaleString("de-DE")}</div>
+        );
+      },
+      valueGetter: (cellValues) =>
+        "Rp." + cellValues.row.jumlah_terbayar.toLocaleString("de-DE"),
     },
   ];
 

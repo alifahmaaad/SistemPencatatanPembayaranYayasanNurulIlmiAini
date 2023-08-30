@@ -26,6 +26,8 @@ import { delete_komite_siswa_by_id } from "../Database/Komite/dbkomite";
 import { delete_ekskul_siswa_by_id } from "../Database/ekskul/dbekskul";
 import { delete_buku_siswa_by_id } from "../Database/buku/dbbuku";
 import { deletekelas, deletesiswa } from "../Database/database";
+import { delete_harian_siswa_by_id } from "../Database/laporan/dbharian";
+import { delete_bulanan_siswa_by_id } from "../Database/laporan/dbbulanan";
 const deleteData = async (selectionModel, title, reset) => {
   switch (title) {
     case "spp":
@@ -70,9 +72,19 @@ const deleteData = async (selectionModel, title, reset) => {
       break;
     case "siswa":
       await deletesiswa(selectionModel);
+      reset();
       break;
     case "kelas":
       await deletekelas(selectionModel);
+      reset();
+      break;
+    case "Data Laporan Harian":
+      await delete_harian_siswa_by_id(selectionModel);
+      reset();
+      break;
+    case "Data Laporan Bulanan":
+      await delete_bulanan_siswa_by_id(selectionModel);
+      reset();
       break;
     default:
       break;
@@ -146,6 +158,92 @@ function CustomToolbar({
           </Alert>
         </Box>
       ) : null}
+      {(title == "Data Laporan Bulanan") & (selectionModel.length > 0) ? (
+        <Box padding={"0.5rem 0 0 0"}>
+          <Alert severity="error">
+            Menghapus Data Laporan Bulanan dapat mengurangi jumlah pada
+            perhitungan
+          </Alert>
+        </Box>
+      ) : null}
+      {(title == "Data Laporan Harian") & (selectionModel.length > 0) ? (
+        <Box padding={"0.5rem 0 0 0"}>
+          <Alert severity="error">
+            Menghapus Data Laporan Harian dapat mengurangi jumlah pada
+            perhitungan
+          </Alert>
+        </Box>
+      ) : null}
+      {title == "Qurban" && (
+        <Typography
+          margin="1rem auto 0 auto"
+          width={"95%"}
+          color={"black"}
+          fontWeight={"bold"}
+        >
+          {"Total Pembayaran Qurban Siswa = Rp." + total.toLocaleString("id")}
+        </Typography>
+      )}
+      {title == "Qurban" && (
+        <Typography
+          margin="1rem auto 0 auto"
+          width={"95%"}
+          color={"black"}
+          fontWeight={"bold"}
+        >
+          {"Total Pembayaran Qurban Siswa = Rp." + total.toLocaleString("id")}
+        </Typography>
+      )}
+      {title == "spp" && (
+        <Typography
+          margin="1rem auto 0 auto"
+          width={"95%"}
+          color={"black"}
+          fontWeight={"bold"}
+        >
+          {"Total Pembayaran Spp Siswa = Rp." + total.toLocaleString("id")}
+        </Typography>
+      )}
+      {title == "komite" && (
+        <Typography
+          margin="1rem auto 0 auto"
+          width={"95%"}
+          color={"black"}
+          fontWeight={"bold"}
+        >
+          {"Total Pembayaran Komite Siswa = Rp." + total.toLocaleString("id")}
+        </Typography>
+      )}
+      {title == "ekskul" && (
+        <Typography
+          margin="1rem auto 0 auto"
+          width={"95%"}
+          color={"black"}
+          fontWeight={"bold"}
+        >
+          {"Total Pembayaran Ekskul Siswa = Rp." + total.toLocaleString("id")}
+        </Typography>
+      )}
+      {title == "les" && (
+        <Typography
+          margin="1rem auto 0 auto"
+          width={"95%"}
+          color={"black"}
+          fontWeight={"bold"}
+        >
+          {"Total Pembayaran Les Siswa = Rp." + total.toLocaleString("id")}
+        </Typography>
+      )}
+      {title == "les_un" && (
+        <Typography
+          margin="1rem auto 0 auto"
+          width={"95%"}
+          color={"black"}
+          fontWeight={"bold"}
+        >
+          {"Total Pembayaran Les UN Siswa = Rp." + total.toLocaleString("id")}
+        </Typography>
+      )}
       {title == "Data Laporan Bulanan" && (
         <Typography
           margin="1rem auto 0 auto"
@@ -197,7 +295,7 @@ const TableCustom = ({
     <Box>
       <Card variant="outlined" sx={{ margin: "1rem 0" }}>
         <CardContent>
-          <Box sx={{ borderColor: "white", height: 425, padding: "1rem 0" }}>
+          <Box sx={{ borderColor: "white", height: 500, padding: "1rem 0" }}>
             <DataGrid
               loading={loading}
               checkboxSelection

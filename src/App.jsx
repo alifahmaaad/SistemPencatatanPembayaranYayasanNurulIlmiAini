@@ -32,6 +32,9 @@ import CreateEkskul from "./pages/Pembayaran/Ekskul/CreateEkskul";
 import CreateKomite from "./pages/Pembayaran/Komite/CreateKomite";
 import CreateLes from "./pages/Pembayaran/Les/CreateLes";
 import CreateLesUN from "./pages/Pembayaran/Les Un/CreateLesUN";
+import CreateQurban from "./pages/Pembayaran/qurban/CreateQurban";
+import DetailSiswaTagihan from "./pages/Siswa/DetailSiswaTagihan";
+import DetailSiswaTerbayar from "./pages/Siswa/DetailSiswaTerbayar";
 
 function App() {
   const isLogin = useSelector((state) => state.isLogin);
@@ -52,6 +55,14 @@ function App() {
             <Route path="/kelas" element={<DaftarKelas />} />
             <Route path="/kelas/tambah" element={<CreateKelas />} />
             <Route path="/siswa" element={<DataSiswa />} />
+            <Route
+              path="/siswa/DetailTagihan/:id_siswa"
+              element={<DetailSiswaTagihan />}
+            />
+            <Route
+              path="/siswa/DetailTerbayar/:id_siswa"
+              element={<DetailSiswaTerbayar />}
+            />
             <Route path="/siswa/tambah/:id_kelas" element={<CreateSiswa />} />
             <Route path="/Pembayaran/spp" element={<DataSpp />} />
             <Route path="/Pembayaran/spp/:id_siswa" element={<DetailSpp />} />
@@ -103,6 +114,10 @@ function App() {
             <Route
               path="/Pembayaran/qurban/:id_siswa"
               element={<DetailQurban />}
+            />
+            <Route
+              path="/Pembayaran/qurban/:id_siswa/tambah"
+              element={<CreateQurban />}
             />
             <Route path="/Laporan/harian" element={<DataHarian />} />
             <Route path="/Laporan/bulanan" element={<DataBulanan />} />

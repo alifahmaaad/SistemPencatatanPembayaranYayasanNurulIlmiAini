@@ -21,6 +21,7 @@ import { create_siswa_Pendaftaran } from "../../Database/pendaftaran/dbpendaftar
 import { create_siswa_Pendaftaran_ulang } from "../../Database/pendaftaranulang/dbpendaftaranulang";
 import { create_siswa_buku } from "../../Database/buku/dbbuku";
 import { create_siswa_pakaian } from "../../Database/pakaian/dbpakaian";
+import { create_siswa_qurban } from "../../Database/qurban/dbqurban";
 const CreateSiswa = () => {
   const isLogin = useSelector((state) => state.isLogin);
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ const CreateSiswa = () => {
   const [BulanLes, setBulanLes] = useState(bulan);
   const [BulanLesUN, setBulanLesUN] = useState(bulan);
   const [BulanEkskul, setBulanEkskul] = useState(bulan);
+  const [BulanQurban, setBulanQurban] = useState(bulan);
   const handleSPP = (getBulan) => {
     const temp = [];
     for (let index = 0; index < getBulan.length; index++) {
@@ -93,6 +95,15 @@ const CreateSiswa = () => {
     }
     setBulanEkskul(temp);
   };
+  const handleQurban = (getBulan) => {
+    const temp = [];
+    for (let index = 0; index < getBulan.length; index++) {
+      if (!getBulan[index].includes("-")) {
+        temp.push(getBulan[index]);
+      }
+    }
+    setBulanQurban(temp);
+  };
   const handleTambahSiswa = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -109,6 +120,7 @@ const CreateSiswa = () => {
       ekskul: data.get("Ekskul"),
       buku: data.get("buku"),
       pakaian: data.get("pakaian"),
+      qurban: data.get("Qurban"),
     };
     const nilaierror = await check_bfr_create_siswa(
       BulanSPP,
@@ -138,6 +150,13 @@ const CreateSiswa = () => {
       }
       for (let i = 0; i < BulanEkskul.length; i++) {
         await create_siswa_ekskul(id_kelas, BulanEkskul[i], formdata);
+      }
+      // console.log(formdata.qurban);
+      if (formdata.qurban) {
+        console.log("test");
+        for (let i = 0; i < BulanQurban.length; i++) {
+          await create_siswa_qurban(id_kelas, BulanQurban[i], formdata);
+        }
       }
       await create_siswa_buku(id_kelas, formdata);
       await create_siswa_pakaian(id_kelas, formdata);
@@ -245,7 +264,7 @@ const CreateSiswa = () => {
             <TextField
               id="input pendaftaran_ulang"
               name="pendaftaran_ulang"
-              label="Tagihan pendaftaran_ulang"
+              label="Tagihan Pendaftaran Ulang"
               required
               InputProps={{
                 inputComponent: FormatAngka,
@@ -265,6 +284,21 @@ const CreateSiswa = () => {
               fungsi={handleEkskul}
               bulan={bulan}
             />
+            <Alert
+              severity="info"
+              sx={{ marginBottom: "1rem", marginTop: "1.5rem" }}
+            >
+              Pembayaran Qurban tidak harus diisi atau dapat dikosongkan Jika
+              tidak diisi, pastikan checkbox pada bulan tidak tercentang
+            </Alert>
+            <CheckboxBulan
+              jenis={"Qurban"}
+              fungsi={handleQurban}
+              bulan={bulan}
+              required={false}
+              // qurban={false}
+            />
+
             <br />
             <br />
             <TextField
@@ -293,12 +327,7 @@ const CreateSiswa = () => {
               fullWidth={true}
               size="small"
             />
-            <Alert
-              severity="info"
-              sx={{ marginBottom: "1rem", marginTop: "1.5rem" }}
-            >
-              Untuk Pembayaran Qurban dapat ditambahkan pada menu QURBAN
-            </Alert>
+
             <Box
               display={"flex"}
               justifyContent={"flex-end"}

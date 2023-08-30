@@ -148,6 +148,11 @@ const Login = () => {
                   LOGIN
                 </Button>
               </form>
+              <div style={{ paddingTop: "1rem" }}>
+                <b>demo Account</b>
+                <div>username : demo</div>
+                <div>dipassword : demo</div>
+              </div>
             </Box>
           </Box>
         </Grid>

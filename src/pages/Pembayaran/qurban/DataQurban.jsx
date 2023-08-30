@@ -2,58 +2,20 @@ import React, { useEffect, useState } from "react";
 import TableCustom from "../../../component/TableCustom";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { create_history, getSiswa } from "../../../Database/database";
+import { getSiswa } from "../../../Database/database";
 import Header from "../../../component/Header";
 import PilihKelas from "../../../component/PilihKelas";
-import {
-  Alert,
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField,
-  Typography,
-} from "@mui/material";
-import FormatAngka from "../../../component/FormatAngka";
+import { Alert, Box, Button, Typography } from "@mui/material";
 import { buttonSX } from "../../../buttonsx";
-import { create_siswa_Qurban } from "../../../Database/qurban/dbqurban";
 const DataQurban = () => {
   const isLogin = useSelector((state) => state.isLogin);
-  const [open, setOpen] = useState(false);
-
-  const [jumlah, setJumlah] = useState(0);
   const [rows, setRow] = useState([]);
   const { state } = useLocation();
   const [isIdGet, setisIdGet] = useState();
   const [isNewdata, setIsNewdata] = useState(false);
   const [loading, setLoading] = useState(true);
   const [namakelas, setNamakelas] = useState("testest");
-  const [defaultterbayar, setDefaultterbayar] = useState(0);
-  const [reseter, setReseter] = useState(0);
-  const [idBayar, setIdBayar] = useState([]);
   const navigate = useNavigate();
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleBayar = async () => {
-    // console.log(idBayar[0]); //idsiswa
-    // console.log(jumlah);
-    await create_siswa_Qurban(parseInt(jumlah), idBayar[0]);
-    await create_history(
-      parseInt(jumlah),
-      "Pembayaran Qurban",
-      "-",
-      idBayar[0]
-    );
-    setReseter(reseter + 1);
-    handleClose();
-  };
   useEffect(() => {
     if (!isLogin) {
       navigate("/Login");
@@ -110,12 +72,12 @@ const DataQurban = () => {
     {
       field: "nisn_atau_no_absen",
       headerName: "NISN/NO ABSEN",
-      width: 100,
+      width: 150,
     },
     {
       field: "Aksi",
       sortable: false,
-      width: 300,
+      width: 200,
       headerName: "Aksi",
       renderCell: (cellValues) => {
         return (
@@ -129,79 +91,8 @@ const DataQurban = () => {
                 navigate(window.location.pathname + "/" + cellValues.row.id);
               }}
             >
-              <Typography fontSize={"10px"}>Detail</Typography>
+              <Typography fontSize={"10px"}>Detail Qurban Siswa</Typography>
             </Button>
-            <Button
-              sx={buttonSX}
-              variant="contained"
-              color="primary"
-              disabled={
-                cellValues.row.jumlah_terhutang -
-                  cellValues.row.jumlah_terbayar ==
-                  0 && true
-              }
-              onClick={async (event) => {
-                event.stopPropagation();
-                setJumlah(0);
-                setDefaultterbayar(0);
-                setIdBayar([cellValues.row.id]);
-                handleClickOpen();
-                // console.log(cellValues.row);
-              }}
-            >
-              <Typography fontSize={"10px"}>Bayar Qurban</Typography>
-            </Button>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              componentsProps={{
-                backdrop: { style: { opacity: "50%" } },
-              }}
-            >
-              <DialogTitle color={"#53c79e"} fontWeight={"bold"}>
-                Bayar Qurban
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText width={"25rem"}>
-                  <b>
-                    Masukkan Jumlah Pembayaran Qurban untuk informasi siswa,
-                  </b>
-                  <br /> Siswa <span>: </span>
-                  {cellValues.row.nama} <br /> kelas
-                  <span> : {cellValues.row.kelas}</span>
-                  <br />
-                  Tingkat <span> : </span>
-                  {cellValues.row.tingkat}
-                  <br />
-                </DialogContentText>
-                <TextField
-                  margin="dense"
-                  name="bayar_Qurban"
-                  id="bayar_Qurban"
-                  label={"Pembayaran Qurban"}
-                  fullWidth
-                  defaultValue={defaultterbayar}
-                  InputProps={{
-                    inputComponent: FormatAngka,
-                  }}
-                  sx={{
-                    input: {
-                      color: jumlah < 0 ? "red" : null,
-                    },
-                  }}
-                  variant="standard"
-                  onChange={(e) => {
-                    setJumlah(e.target.value);
-                  }}
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose}>Batal</Button>
-                <Button disabled={jumlah < 0 && true} onClick={handleBayar}>
-                  Bayar
-                </Button>
-              </DialogActions>
-            </Dialog>
           </div>
         );
       },
@@ -212,7 +103,7 @@ const DataQurban = () => {
     <div>
       <Header
         title="Data Qurban Siswa"
-        button_tambah={isIdGet ? true : false}
+        button_tambah={false}
         idkelas={isIdGet}
       />
       {!isIdGet && (
@@ -232,8 +123,8 @@ const DataQurban = () => {
         <div>
           <Box paddingTop={"0.5rem"}>
             <Alert severity="info">
-              Untuk Melihat Detail Pembayaran Qurban Siswa klik tombol "Detail
-              Qurban Siswa"
+              Untuk Melihat Detail Pembayaran Qurban kilk tombol "Detail Qurban
+              Siswa"
             </Alert>
           </Box>
           <TableCustom

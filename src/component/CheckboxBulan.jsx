@@ -42,6 +42,7 @@ NumericFormatCustom.propTypes = {
 
 const CheckboxBulan = (props) => {
   const [Bulan, setBulan] = useState(props.bulan);
+  const [val, setVal] = useState(0);
   if (props.do) {
     useEffect(() => {
       setBulan(props.bulan);
@@ -69,25 +70,32 @@ const CheckboxBulan = (props) => {
           fontSize: "12px",
         }}
       >
-        Jumlah Bulanan Pembayaran {props.jenis} *
+        Jumlah Bulanan Pembayaran {props.jenis}
+        {props.required == false ? null : "*"}
       </FormLabel>
       <br />
       <TextField
         id={"input " + props.jenis}
         name={props.jenis}
-        required
+        required={props.required == false ? false : true}
         InputProps={{
           inputComponent: NumericFormatCustom,
         }}
         variant="standard"
         fullWidth={true}
         size="small"
+        onChange={(e) => setVal(e.target.value)}
       />
       {props.bulan.map((item, i) => (
         <FormControlLabel
           key={i}
           control={
-            <Checkbox size="small" defaultChecked onChange={() => handle(i)} />
+            <Checkbox
+              size="small"
+              defaultChecked={props.qurban == false ? false : true}
+              onChange={() => handle(i)}
+              disabled={val == 0 || val == "" ? true : false}
+            />
           }
           label={item}
         />
